@@ -1,3 +1,5 @@
 function Notify(text, type)
-  exports['qb-core']:Notify(text, type)
+    SetNotificationTextEntry("STRING")
+    AddTextComponentString(text)
+    DrawNotification(false, false)
 end
