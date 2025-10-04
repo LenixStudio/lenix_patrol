@@ -44,9 +44,9 @@ function deactivateMic()
     exports["pma-voice"]:clearProximityOverride()
     isToggleOn = false
     isMicActive = false
-    exports["interaction"]:showInteraction(nil, 'Deactivated')
+    exports.tr_fusion:showInteraction(nil, 'Deactivated')
     Wait(1000)
-    exports["interaction"]:hideInteraction()
+    exports.tr_fusion:hideInteraction()
 end
 
 function vehicleCheckLoop()
@@ -86,7 +86,7 @@ RegisterNetEvent('tr_patrolmegaphone:client:toggle', function()
             applyMicFilter()
             exports["pma-voice"]:overrideProximityRange(longVoiceRange, true)
             isToggleOn = true
-            exports["interaction"]:showInteraction('J', 'Activated')
+            exports.tr_fusion:showInteraction('J', 'Activated')
             vehicleCheckLoop()
         else
             deactivateMic()
