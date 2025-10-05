@@ -7,7 +7,7 @@ export default defineConfig({
     outDir: 'build',
     target: 'esnext',
     rollupOptions: {
-      input: './src/index.html',
+      input: './index.html',
       output: {
         entryFileNames: 'assets/index-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
