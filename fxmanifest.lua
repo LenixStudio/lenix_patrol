@@ -10,7 +10,7 @@ client_scripts {
 }
 server_script 'server/main.lua'
 
-ui_page 'web/src/index.html'
+ui_page 'web/index.html'
 file 'web/src/*.*'
 
 escrow_ignore {
