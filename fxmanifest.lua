@@ -16,3 +16,7 @@ client_scripts {
   'client/config.lua',
 }
 server_script 'server/main.lua'
+
+escrow_ingore {
+  'config/*.lua'
+}

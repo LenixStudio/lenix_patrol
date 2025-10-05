@@ -1,1 +1,2 @@
-# Documentation https://trippler.gitbook.io
+# Documentation
+- https://trippler.gitbook.io
