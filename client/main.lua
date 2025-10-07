@@ -44,7 +44,7 @@ function deactivateMic()
     exports["pma-voice"]:clearProximityOverride()
     isToggleOn = false
     isMicActive = false
-    exports.tr_fusion:showInteraction(nil, 'Deactivated')
+    exports.tr_fusion:showInteraction(nil, Option.Locales.Off)
     Wait(1000)
     exports.tr_fusion:hideInteraction()
 end
@@ -55,7 +55,7 @@ function vehicleCheckLoop()
             Wait(500)
             if not isEmergencyVehicle() then
                 canUseMic = false
-                exports['qb-core']:Notify('You left the emergency vehicle, mic turned off!', 'warning', 7500)
+                exports['qb-core']:Notify(Option.Locales.Left, 'warning', 7500)
                 deactivateMic()
                 break
             end
@@ -76,7 +76,7 @@ RegisterKeyMapping(Option.Command, Option.Description, 'keyboard', Option.Key)
 RegisterNetEvent('tr_patrolmegaphone:client:toggle', function()
     print('Toggling Patrol Mic')
     if not isEmergencyVehicle() then
-        exports['qb-core']:Notify('You must be in an emergency vehicle to use the patrol mic!', 'error', 5000)
+        exports['qb-core']:Notify(Option.Locales.Refused, 'error', 5000)
         return
     end
     
@@ -86,12 +86,12 @@ RegisterNetEvent('tr_patrolmegaphone:client:toggle', function()
             applyMicFilter()
             exports["pma-voice"]:overrideProximityRange(longVoiceRange, true)
             isToggleOn = true
-            exports.tr_fusion:showInteraction('J', 'Activated')
+            exports.tr_fusion:showInteraction('J', Option.Locales.On)
             vehicleCheckLoop()
         else
             deactivateMic()
         end
     else
-        exports['qb-core']:Notify('Patrol mic is not available right now!', 'error', 3000)
+        exports['qb-core']:Notify(Option.Locales.Unavailable, 'error', 3000)
     end
 end)
