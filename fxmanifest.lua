@@ -2,7 +2,7 @@ fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
 
-author 'Trippler Hub'
+author 'Trippler  Scripts'
 
 client_scripts {
   'config/client.lua',
