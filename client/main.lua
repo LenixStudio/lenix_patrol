@@ -1,8 +1,10 @@
-local longVoiceRange = Option.Range
+local settings = require 'config/client'
+
+local longVoiceRange = settings.range
 local micFilter, isMicActive, isToggleOn = false, false, false
 local canUseMic = true
-local VehicleModels = Option.VehicleModels
-local VehicleClasses = Option.VehicleClass
+local VehicleModels = settings.vehicleModels
+local VehicleClasses = settings.vehicleClass
 
 function isEmergencyVehicle()
     local playerPed = PlayerPedId()
@@ -44,9 +46,9 @@ function deactivateMic()
     exports["pma-voice"]:clearProximityOverride()
     isToggleOn = false
     isMicActive = false
-    exports.tr_fusion:showInteraction(nil, Option.Locales.Off)
+    exports.tr_fusion:show(nil, settings.locales.off)
     Wait(1000)
-    exports.tr_fusion:hideInteraction()
+    exports.tr_fusion:hide()
 end
 
 function vehicleCheckLoop()
@@ -55,7 +57,7 @@ function vehicleCheckLoop()
             Wait(500)
             if not isEmergencyVehicle() then
                 canUseMic = false
-                exports['qb-core']:Notify(Option.Locales.Left, 'warning', 7500)
+                exports['qb-core']:Notify(settings.locales.left, 'warning', 7500)
                 deactivateMic()
                 break
             end
@@ -67,16 +69,15 @@ CreateThread(function()
     createMicFilter()
 end)
 
-RegisterCommand(Option.Command, function()
+RegisterCommand(settings.command, function()
     TriggerEvent('tr_patrolmegaphone:client:toggle')
 end, false)
 
-RegisterKeyMapping(Option.Command, Option.Description, 'keyboard', Option.Key)
+RegisterKeyMapping(settings.command, settings.description, 'keyboard', settings.key)
 
 RegisterNetEvent('tr_patrolmegaphone:client:toggle', function()
-    print('Toggling Patrol Mic')
     if not isEmergencyVehicle() then
-        exports['qb-core']:Notify(Option.Locales.Refused, 'error', 5000)
+        exports['qb-core']:Notify(settings.locales.refused, 'error', 5000)
         return
     end
     
@@ -86,12 +87,12 @@ RegisterNetEvent('tr_patrolmegaphone:client:toggle', function()
             applyMicFilter()
             exports["pma-voice"]:overrideProximityRange(longVoiceRange, true)
             isToggleOn = true
-            exports.tr_fusion:showInteraction('J', Option.Locales.On)
+            exports.tr_fusion:show('J', settings.locales.on)
             vehicleCheckLoop()
         else
             deactivateMic()
         end
     else
-        exports['qb-core']:Notify(Option.Locales.Unavailable, 'error', 3000)
+        exports['qb-core']:Notify(settings.locales.unavailable, 'error', 3000)
     end
 end)
