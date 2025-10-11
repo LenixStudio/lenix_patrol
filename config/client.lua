@@ -1,7 +1,7 @@
 return {
     range = 30.0,
     command = 'togglemic',
-    key = 'J',
+    key = 'K',
     description = 'Toggle Patrol\'s Mic',
     locales = {
         on = 'Activated',
