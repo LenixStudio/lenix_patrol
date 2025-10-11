@@ -6,7 +6,7 @@ local canUseMic = true
 local VehicleModels = settings.vehicleModels
 local VehicleClasses = settings.vehicleClass
 
-function isEmergencyVehicle()
+local function isEmergencyVehicle()
     local playerPed = PlayerPedId()
     if IsPedInAnyVehicle(playerPed, false) then
         local vehicle = GetVehiclePedIsIn(playerPed, false)
@@ -22,7 +22,7 @@ function isEmergencyVehicle()
     return false
 end
 
-function createMicFilter()
+local function createMicFilter()
     micFilter = CreateAudioSubmix("tr_patrolmegaphone")
     if micFilter then
         SetAudioSubmixEffectRadioFx(micFilter, 0)
@@ -31,17 +31,17 @@ function createMicFilter()
     end
 end
 
-function applyMicFilter()
+local function applyMicFilter()
     if micFilter then
         MumbleSetSubmixForServerId(PlayerId(), micFilter)
     end
 end
 
-function removeMicFilter()
+local function removeMicFilter()
     MumbleSetSubmixForServerId(PlayerId(), -1)
 end
 
-function deactivateMic()
+local function deactivateMic()
     removeMicFilter()
     exports["pma-voice"]:clearProximityOverride()
     isToggleOn = false
@@ -51,7 +51,7 @@ function deactivateMic()
     exports.tr_fusion:hide()
 end
 
-function vehicleCheckLoop()
+local function vehicleCheckLoop()
     CreateThread(function()
         while isToggleOn do
             Wait(500)
