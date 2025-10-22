@@ -8,14 +8,14 @@ dependencies {
   'tr_lib'
 }
 
-author 'Trippler Scripts'
+author 'Trippler'
+docs 'https://docs.trippler.store'
 
 client_scripts {
   'client/utils.lua',
   'client/main.lua',
 }
 server_script 'server/main.lua'
-
 files {
   'config/client.lua',
 }
