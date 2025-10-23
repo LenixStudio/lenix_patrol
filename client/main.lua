@@ -1,9 +1,5 @@
-local originalPrint = print
-print = function(...)
-    local info = debug.getinfo(2, "Sl")
-    local lineInfo = info.short_src .. ":" .. info.currentline
-    return Option.Print.Debug and originalPrint("[" .. lineInfo .. "]", ...)
-end
+local IsUIOpen, Option, UnAvailableExtras, ActiveExtras, InActiveExtras = false, {}, {}, {}, {}
+local config = require 'config/client'
 
 local function setVehicleExtras(availabilityCheck, originalStates, UnAvailableExtras)
     for i = 1, 12 do
@@ -21,7 +17,7 @@ local function setVehicleExtras(availabilityCheck, originalStates, UnAvailableEx
     for i = 1, 12 do
         SetVehicleExtra(Veh, i, not originalStates[i])
     end
-    print("Restored to original states: " .. json.encode(originalStates))
+    print({type = 'info', message = ("Restored to original states: %s"):format(json.encode(originalStates))})
 
     for i = 1, 12 do
         if availabilityCheck[i] then
@@ -46,7 +42,7 @@ local function checkVehicleExtras()
             table.insert(turnOnTable, false)
         end
     end
-    print("Original states: " .. json.encode(turnOnTable))
+    print({type = 'info', message = ("Original states: %s"):format(json.encode(turnOnTable))})
 
     for i = 1, 12 do
         if turnOnTable[i] then
@@ -64,7 +60,7 @@ local function checkVehicleExtras()
 end
 
 local function OpenDamageCheck()
-    if Option.IgnoreVehicleState then return end
+    if config.ignoreVehicleState then return end
     if IsVehicleDamaged(Veh) then
         if IsUIOpen then
             SendNUIMessage({
@@ -81,15 +77,15 @@ local function OpenDamageCheck()
 end
 
 local function ToggleDamageCheck(isExtraOn, extraNum, cb)
-    if not Option.IgnoreVehicleState and IsVehicleDamaged(Veh) then
+    if not config.ignoreVehicleState and IsVehicleDamaged(Veh) then
         if isExtraOn == false then
-            Notify(Option.Notify.Error.Damaged, 'error')
+            notify(config.notify.error.damaged, 'error')
             cb({success = false, error = "Veh damaged"})
             return
         end
         SetVehicleExtra(Veh, extraNum, isExtraOn)
         local newState = not isExtraOn -- After toggle, state is opposite
-        print("Extra " .. extraNum .. " " .. (isExtraOn and "disabled" or "enabled"))
+        print({type = 'info', message = ("Extra %s %s"):format(extraNum, isExtraOn and "disabled" or "enabled")})
         cb({
             success = true,
             extraNum = extraNum,
@@ -98,7 +94,7 @@ local function ToggleDamageCheck(isExtraOn, extraNum, cb)
     else
         SetVehicleExtra(Veh, extraNum, isExtraOn)
         local newState = not isExtraOn -- After toggle, state is opposite
-        print("Extra " .. extraNum .. " " .. (isExtraOn and "disabled" or "enabled"))
+        print({type = 'info', message = ("Extra %s %s"):format(extraNum, isExtraOn and "disabled" or "enabled")})
         cb(
             {
                 success = true,
@@ -111,9 +107,8 @@ end
 
 local function toggleRemote()
     if not InVehicle then return end
-    if OpenDamageCheck() == 1 then return Notify(Option.Notify.Success.Closed, 'success') end
-    if OpenDamageCheck() == 2 then return Notify(Option.Notify.Error.Damaged, 'success') end
-
+    if OpenDamageCheck() == 1 then return notify(config.notify.success.closed, 'success') end
+    if OpenDamageCheck() == 2 then return notify(config.notify.error.damaged, 'success') end
     IsUIOpen = not IsUIOpen
     if IsUIOpen then
         SendNUIMessage({
@@ -160,20 +155,20 @@ RegisterNUICallback('unfocus', function(data, cb)
     cb(true)
 end)
 
-RegisterCommand(Option.Controls.toggleRemote.commands.command, Option.Controls.toggleRemote.commands and toggleRemote, Option.Controls.toggleRemote.commands.enabled and false or true)
-RegisterCommand(Option.Controls.toggleCursor.commands.command, Option.Controls.toggleCursor.commands and toggleCursor, Option.Controls.toggleCursor.commands.enabled and false or true)
+RegisterCommand(config.controls.toggleRemote.commands.command, config.controls.toggleRemote.commands and toggleRemote, config.controls.toggleRemote.commands.enabled and false or true)
+RegisterCommand(config.controls.toggleCursor.commands.command, config.controls.toggleCursor.commands and toggleCursor, config.controls.toggleCursor.commands.enabled and false or true)
 
-RegisterKeyMapping(Option.Controls.toggleRemote.commands.command, Option.Controls.toggleRemote.description, 'keyboard', Option.Controls.toggleRemote.key)
-RegisterKeyMapping(Option.Controls.toggleCursor.commands.command, Option.Controls.toggleCursor.description, 'keyboard', Option.Controls.toggleCursor.key)
+RegisterKeyMapping(config.controls.toggleRemote.commands.command, config.controls.toggleRemote.description, 'keyboard', config.controls.toggleRemote.key)
+RegisterKeyMapping(config.controls.toggleCursor.commands.command, config.controls.toggleCursor.description, 'keyboard', config.controls.toggleCursor.key)
 
 RegisterCommand('tr_patrolextras_debug', function()
     if not InVehicle then return end
 
     checkVehicleExtras()
-    print('UnAvailableExtras '..json.encode(UnAvailableExtras))
-    print('ActiveExtras '..json.encode(ActiveExtras))
-    print('InActiveExtras '..json.encode(InActiveExtras))
-end, Option.Print.Debug and false or true)
+    print({type = 'info', message = ('UnAvailableExtras %s'):format(json.encode(UnAvailableExtras))})
+    print({type = 'info', message = ('ActiveExtras %s'):format(json.encode(ActiveExtras))})
+    print({type = 'info', message = ('InActiveExtras %s'):format(json.encode(InActiveExtras))})
+end, config.debug and false or true)
 
 CreateThread(function()
     while true do

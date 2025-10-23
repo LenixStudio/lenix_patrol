@@ -9,10 +9,11 @@ client_scripts {
   'config/client.lua',
   'client/main.lua',
 }
+shared_script 'shared/utils.lua'
 server_script 'server/main.lua'
-ui_page 'web/build/index.html'
-file 'web/build/*.*'
+ui_page 'web/index.html'
+file 'web/**'
 
 escrow_ignore {
-  'config/*.lua'
+  'config/main.lua'
 }
