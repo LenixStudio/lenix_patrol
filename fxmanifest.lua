@@ -4,7 +4,7 @@ lua54 'yes'
 dependencies {
   'pma-voice',
   'qb-core',
-  'tr_fusion',
+  'lenix_fusion',
   'tr_lib'
 }
 
