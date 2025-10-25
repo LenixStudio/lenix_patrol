@@ -46,9 +46,9 @@ local function deactivateMic()
     exports["pma-voice"]:clearProximityOverride()
     isToggleOn = false
     isMicActive = false
-    exports.tr_fusion:show(nil, settings.locales.off)
+    exports.lenix_fusion:show(nil, settings.locales.off)
     Wait(1000)
-    exports.tr_fusion:hide()
+    exports.lenix_fusion:hide()
 end
 
 local function vehicleCheckLoop()
@@ -87,7 +87,7 @@ RegisterNetEvent('tr_patrolmegaphone:client:toggle', function()
             applyMicFilter()
             exports["pma-voice"]:overrideProximityRange(longVoiceRange, true)
             isToggleOn = true
-            exports.tr_fusion:show('J', settings.locales.on)
+            exports.lenix_fusion:show('J', settings.locales.on)
             vehicleCheckLoop()
         else
             deactivateMic()
