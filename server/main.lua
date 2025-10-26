@@ -1,7 +1,11 @@
 local lib = exports.tr_lib
+
 AddEventHandler('entityCreated', function(handle)
-  local vehicleClass = lib.callback().awaitClient('getVehicleClass', NetworkGetEntityOwner(handle), 1000, handle)
+  local source<const> = NetworkGetEntityOwner(handle)
+  local vehicleClass = lib:callback().awaitClient('getVehicleClass', source, 1000)
+
   if GetEntityType(handle) == 2 and vehicleClass == 18 then
-    TriggerClientEvent('tr_patrolextras:client:checkVehicleExtras')
+    Wait(500)
+    TriggerClientEvent('tr_patrolextras:client:checkVehicleExtras', source, handle, vehicleClass)
   end
 end)
