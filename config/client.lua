@@ -6,7 +6,7 @@ return {
             damaged = "Vehicle's sirens are damaged",
         },
         success = {
-            closed = "Remote have been successfuly turn off"
+            closed = "Remote has been successfuly turned off"
         },
     },
     controls = {
