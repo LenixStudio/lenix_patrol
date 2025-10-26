@@ -2,7 +2,7 @@
 const state = {
     unAvailableExtras: [],
     activeExtras: [],
-    inactiveExtras: [],
+    inActiveExtras: [],
     isSirenOn: false,
     isDragging: false
 };
@@ -15,28 +15,29 @@ const dom = {
     get dragHandle() { return document.getElementById('drag-handle'); }
 };
 
-// Storage utilities (kept for compatibility - using variables as fallback)
+// Storage utilities using localStorage
 const storage = {
     save(top, left) {
         try {
             const position = { top, left };
-            // Store in memory since localStorage isn't supported
-            this._position = position;
+            localStorage.setItem('panel-position', JSON.stringify(position));
         } catch (error) {
             console.error('Failed to save position:', error);
         }
     },
-    
+
     load() {
         try {
-            return this._position || { top: null, left: null };
+            const saved = localStorage.getItem('panel-position');
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            return { top: null, left: null };
         } catch (error) {
             console.error('Failed to load position:', error);
             return { top: null, left: null };
         }
-    },
-    
-    _position: null
+    }
 };
 
 // UI Creation
@@ -478,7 +479,6 @@ function makeDraggable(container) {
     }
 }
 
-// Button management
 function createExtraButton(extraNum) {
     const button = document.createElement('button');
     button.className = 'extra-button';
@@ -489,9 +489,9 @@ function createExtraButton(extraNum) {
     content.textContent = extraNum;
     button.appendChild(content);
     
-    const isUnavailable = state.unAvailableExtras.includes(extraNum);
-    const isActive = state.activeExtras.includes(extraNum);
-    const isInactive = state.inactiveExtras.includes(extraNum);
+    const isUnavailable = state.unAvailableExtras[extraNum - 1];
+    const isActive = state.activeExtras[extraNum - 1];
+    const isInactive = state.inActiveExtras[extraNum - 1];
 
     if (isUnavailable) {
         button.classList.add('unavailable');
@@ -522,24 +522,21 @@ function toggleExtra(extraNum) {
         if (!data.success) return;
         
         const button = document.getElementById(`extra-${extraNum}`);
+        const index = extraNum - 1;
         
         if (data.isActive) {
             button.classList.remove('inactive', 'pulse-inactive');
             button.classList.add('active');
             if (state.isSirenOn) button.classList.add('siren-mode');
             
-            state.inactiveExtras = state.inactiveExtras.filter(n => n !== extraNum);
-            if (!state.activeExtras.includes(extraNum)) {
-                state.activeExtras.push(extraNum);
-            }
+            state.activeExtras[index] = true;
+            state.inActiveExtras[index] = false;
         } else {
             button.classList.remove('active', 'siren-mode');
             button.classList.add('inactive', 'pulse-inactive');
             
-            state.activeExtras = state.activeExtras.filter(n => n !== extraNum);
-            if (!state.inactiveExtras.includes(extraNum)) {
-                state.inactiveExtras.push(extraNum);
-            }
+            state.activeExtras[index] = false;
+            state.inActiveExtras[index] = true;
         }
         
         updateStatusCounts();
@@ -554,9 +551,14 @@ function updateSirenIndicators() {
 }
 
 function updateStatusCounts() {
-    document.getElementById('active-count').textContent = `${state.activeExtras.length} Active`;
-    document.getElementById('inactive-count').textContent = `${state.inactiveExtras.length} Inactive`;
-    document.getElementById('unavailable-count').textContent = `${state.unAvailableExtras.length} Unavailable`;
+    // Count inactive that are NOT also unavailable
+    const inactiveCount = state.inActiveExtras.filter((isInactive, index) => {
+        return isInactive && !state.unAvailableExtras[index];
+    }).length;
+
+    document.getElementById('active-count').textContent = `${state.activeExtras.filter(Boolean).length} Active`;
+    document.getElementById('inactive-count').textContent = `${inactiveCount} Inactive`;
+    document.getElementById('unavailable-count').textContent = `${state.unAvailableExtras.filter(Boolean).length} Unavailable`;
 }
 
 // Position management
@@ -630,12 +632,12 @@ function fadeOut(element) {
 document.addEventListener('DOMContentLoaded', createHTML);
 
 window.addEventListener('message', (event) => {
-    const { action, unAvailableExtras, activeExtras, inactiveExtras, sirenOn } = event.data;
+    const { action, unAvailableExtras, activeExtras, inActiveExtras, sirenOn } = event.data;
     
     if (action === 'open') {
         state.unAvailableExtras = unAvailableExtras || [];
         state.activeExtras = activeExtras || [];
-        state.inactiveExtras = inactiveExtras || [];
+        state.inActiveExtras = inActiveExtras || [];
         
         initializeUI();
         fadeIn(dom.root);
@@ -669,7 +671,7 @@ window.addEventListener('resize', () => {
     
     container.style.top = `${newTop}px`;
     container.style.left = `${newLeft}px`;
-    
+
     storage.save(newTop, newLeft);
 });
 
