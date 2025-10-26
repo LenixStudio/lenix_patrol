@@ -4,8 +4,10 @@ lua54 'yes'
 
 author 'Trippler'
 docs 'https://docs.trippler.store'
+version '1.0.0'
 
 client_scripts {
+  'client/bridge.lua',
   'config/client.lua',
   'client/main.lua',
 }
