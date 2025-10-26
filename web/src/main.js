@@ -96,7 +96,7 @@ function injectStyles(container) {
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         max-width: 320px;
         width: auto;
-        transform: translateX(20px);
+        transform: translateX(5px);
         animation: slideIn 0.6s ease-out forwards;
         position: absolute;
         user-select: none;
