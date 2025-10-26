@@ -1,6 +1,9 @@
 fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
+dependencies {
+  'tr_lib'
+}
 
 author 'Trippler'
 docs 'https://docs.trippler.store'
