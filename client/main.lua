@@ -1,61 +1,20 @@
-local IsUIOpen, Option, UnAvailableExtras, ActiveExtras, InActiveExtras = false, {}, {}, {}, {}
-local config = require 'config/client'
+local IsUIOpen, UnAvailableExtras, ActiveExtras, InActiveExtras = false, {}, {}, {}
+local config<const> = require 'config/client'
+local remote<const>, cursor<const> = config.controls.toggleRemote, config.controls.toggleCursor
 
-local function setVehicleExtras(availabilityCheck, originalStates, UnAvailableExtras)
-    for i = 1, 12 do
-        SetVehicleExtra(Veh, i, true)
-        Wait(1)
-        local stateAfterOff = IsVehicleExtraTurnedOn(Veh, i)
-        SetVehicleExtra(Veh, i, false)
-        local stateAfterOn = IsVehicleExtraTurnedOn(Veh, i)
-        if stateAfterOff ~= stateAfterOn then
-            availabilityCheck[i] = false
-        else
-            availabilityCheck[i] = true
-        end
+RegisterCommand('tr_patrolextras_debug', function()
+    if InVehicle then
+        checkVehicleExtras()
+    else
+        notify('get in the vehicle')
     end
-    for i = 1, 12 do
-        SetVehicleExtra(Veh, i, not originalStates[i])
-    end
-    print({type = 'info', message = ("Restored to original states: %s"):format(json.encode(originalStates))})
+end, config.debug and false or true)
 
+function checkVehicleExtras()
     for i = 1, 12 do
-        if availabilityCheck[i] then
-            table.insert(UnAvailableExtras, i)
-        end
-    end
-end
-
-local function checkVehicleExtras()
-    local originalStates, availabilityCheck, turnOnTable = {}, {}, {}
-
-    for i = 1, 12 do
-        originalStates[i] = IsVehicleExtraTurnedOn(Veh, i)
-    end
-
-    setVehicleExtras(availabilityCheck, originalStates, UnAvailableExtras)
-
-    for i = 1, 12 do
-        if originalStates[i] then
-           table.insert(turnOnTable, originalStates[i])
-        else
-            table.insert(turnOnTable, false)
-        end
-    end
-    print({type = 'info', message = ("Original states: %s"):format(json.encode(turnOnTable))})
-
-    for i = 1, 12 do
-        if turnOnTable[i] then
-            table.insert(ActiveExtras, i)
-        elseif turnOnTable[i] == false then
-            table.insert(UnAvailableExtras, i)
-        else
-            table.insert(InActiveExtras, i)
-        end
-    end
-    for i = 1, 12 do
-        turnOnTable[i] = IsVehicleExtraTurnedOn(Veh, i)
-        UnAvailableExtras = UnAvailableExtras
+        ActiveExtras[i] = IsVehicleExtraTurnedOn(Veh, i) and true
+        InActiveExtras[i] = not IsVehicleExtraTurnedOn(Veh, i)
+        UnAvailableExtras[i] = not DoesExtraExist(Veh, i)
     end
 end
 
@@ -84,7 +43,7 @@ local function ToggleDamageCheck(isExtraOn, extraNum, cb)
             return
         end
         SetVehicleExtra(Veh, extraNum, isExtraOn)
-        local newState = not isExtraOn -- After toggle, state is opposite
+        local newState = not isExtraOn
         print({type = 'info', message = ("Extra %s %s"):format(extraNum, isExtraOn and "disabled" or "enabled")})
         cb({
             success = true,
@@ -93,7 +52,7 @@ local function ToggleDamageCheck(isExtraOn, extraNum, cb)
         })
     else
         SetVehicleExtra(Veh, extraNum, isExtraOn)
-        local newState = not isExtraOn -- After toggle, state is opposite
+        local newState = not isExtraOn
         print({type = 'info', message = ("Extra %s %s"):format(extraNum, isExtraOn and "disabled" or "enabled")})
         cb(
             {
@@ -108,24 +67,29 @@ end
 local function toggleRemote()
     if not InVehicle then return end
     if OpenDamageCheck() == 1 then return notify(config.notify.success.closed, 'success') end
-    if OpenDamageCheck() == 2 then return notify(config.notify.error.damaged, 'success') end
-    IsUIOpen = not IsUIOpen
-    if IsUIOpen then
-        SendNUIMessage({
-            action = 'open',
-            UnAvailableExtras = UnAvailableExtras,
-            ActiveExtras = ActiveExtras,
-            InActiveExtras = InActiveExtras,
-            sirenOn = true
-        })
-        IsUiOpen = true
+    if OpenDamageCheck() == 2 then return notify(config.notify.error.damaged, 'error') end
+    if OpenDamageCheck() == false then
+        IsUIOpen = not IsUIOpen
+        if IsUIOpen then
+            checkVehicleExtras()
+            SendNUIMessage({
+                action = 'open',
+                unAvailableExtras = UnAvailableExtras,
+                activeExtras = ActiveExtras,
+                inActiveExtras = InActiveExtras,
+                sirenOn = true
+            })
+            IsUiOpen = true
+        else
+            SetNuiFocus(false, false)
+            SendNUIMessage({
+                action = 'close',
+                sirenOn = false
+            })
+            IsUiOpen = false
+        end
     else
-        SetNuiFocus(false, false)
-        SendNUIMessage({
-            action = 'close',
-            sirenOn = false
-        })
-        IsUiOpen = false
+        print().debug('Something unexpected happend', debug.getinfo(1, "Sl").short_src, debug.getinfo(1, "Sl").currentline)
     end
 end
 
@@ -139,8 +103,6 @@ local function toggleCursor()
 end
 
 RegisterNetEvent('tr_patrolextras:client:checkVehicleExtras', checkVehicleExtras)
-RegisterNetEvent('tr_patrolextras:client:toggleRemote', toggleRemote)
-RegisterNetEvent('tr_patrolextras:client:toggleCursor', toggleCursor)
 
 RegisterNUICallback('toggle', function(data, cb)
     if not InVehicle then return end
@@ -155,34 +117,28 @@ RegisterNUICallback('unfocus', function(data, cb)
     cb(true)
 end)
 
-RegisterCommand(config.controls.toggleRemote.commands.command, config.controls.toggleRemote.commands and toggleRemote, config.controls.toggleRemote.commands.enabled and false or true)
-RegisterCommand(config.controls.toggleCursor.commands.command, config.controls.toggleCursor.commands and toggleCursor, config.controls.toggleCursor.commands.enabled and false or true)
+RegisterCommand(remote.commands.command, remote.commands.enabled and toggleRemote)
+RegisterCommand(cursor.commands.command, cursor.commands.enabled and toggleCursor)
 
-RegisterKeyMapping(config.controls.toggleRemote.commands.command, config.controls.toggleRemote.description, 'keyboard', config.controls.toggleRemote.key)
-RegisterKeyMapping(config.controls.toggleCursor.commands.command, config.controls.toggleCursor.description, 'keyboard', config.controls.toggleCursor.key)
+RegisterKeyMapping(remote.commands.command, remote.description, 'keyboard', remote.key)
+RegisterKeyMapping(cursor.commands.command, cursor.description, 'keyboard', cursor.key)
 
-RegisterCommand('tr_patrolextras_debug', function()
-    if not InVehicle then return end
-
-    checkVehicleExtras()
-    print({type = 'info', message = ('UnAvailableExtras %s'):format(json.encode(UnAvailableExtras))})
-    print({type = 'info', message = ('ActiveExtras %s'):format(json.encode(ActiveExtras))})
-    print({type = 'info', message = ('InActiveExtras %s'):format(json.encode(InActiveExtras))})
-end, config.debug and false or true)
+RegisterNetEvent('tr_patrolextras:client:toggleRemote', toggleRemote)
+RegisterNetEvent('tr_patrolextras:client:toggleCursor', toggleCursor)
 
 CreateThread(function()
+    local lastSirenState = nil
     while true do
         Veh = GetVehiclePedIsIn(PlayerPedId(), false)
         if Veh ~= 0 then
             InVehicle = true
-            if IsVehicleSirenOn(Veh) then
+            local currentSirenState = IsVehicleSirenOn(Veh) and true
+            if lastSirenState == nil or currentSirenState ~= lastSirenState then
                 SendNUIMessage({
-                    sirenOn = true
+                    action = 'sirenCheck',
+                    sirenOn = currentSirenState
                 })
-            else
-                SendNUIMessage({
-                    sirenOn = false
-                })
+                lastSirenState = currentSirenState
             end
         else
             if IsUIOpen then
@@ -193,6 +149,7 @@ CreateThread(function()
                 Veh = 0
             end
             InVehicle = false
+            lastSirenState = nil
         end
         Wait(200)
     end
