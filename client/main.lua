@@ -1,4 +1,5 @@
 local IsUIOpen, UnAvailableExtras, ActiveExtras, InActiveExtras = false, {}, {}, {}
+local require<const> = function(arg) return lib.require(arg) end
 local config<const> = require 'config/client'
 local remote<const>, cursor<const> = config.controls.toggleRemote, config.controls.toggleCursor
 
