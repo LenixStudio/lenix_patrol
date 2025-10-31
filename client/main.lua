@@ -1,5 +1,5 @@
 local IsUIOpen, UnAvailableExtras, ActiveExtras, InActiveExtras = false, {}, {}, {}
-local config<const> = require 'config/client'
+local config<const> = lib.require 'config/client'
 local remote<const>, cursor<const> = config.controls.toggleRemote, config.controls.toggleCursor
 
 RegisterCommand('tr_patrolextras_debug', function()
