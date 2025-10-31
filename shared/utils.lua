@@ -1,7 +1,6 @@
-function require(param)
-    return exports.tr_lib:require(param)
-end
+lib = exports.tr_lib:require [[ @tr_lib/init ]]
+local require<const> = function(arg) return lib.require(arg) end
 
-function print(param)
-    exports.tr_lib:print(param)
+function print()
+    require('@tr_lib/print').print
 end

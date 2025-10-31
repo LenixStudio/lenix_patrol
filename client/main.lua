@@ -1,5 +1,4 @@
 local IsUIOpen, UnAvailableExtras, ActiveExtras, InActiveExtras = false, {}, {}, {}
-local require<const> = function(arg) return lib.require(arg) end
 local config<const> = require 'config/client'
 local remote<const>, cursor<const> = config.controls.toggleRemote, config.controls.toggleCursor
 
@@ -19,7 +18,7 @@ function checkVehicleExtras()
     end
 end
 
-local function OpenDamageCheck()
+local function openDamageCheck()
     if config.ignoreVehicleState then return end
     if IsVehicleDamaged(Veh) then
         if IsUIOpen then
@@ -45,7 +44,7 @@ local function ToggleDamageCheck(isExtraOn, extraNum, cb)
         end
         SetVehicleExtra(Veh, extraNum, isExtraOn)
         local newState = not isExtraOn
-        print({type = 'info', message = ("Extra %s %s"):format(extraNum, isExtraOn and "disabled" or "enabled")})
+        print.info("Extra %s %s", extraNum, isExtraOn and "disabled" or "enabled", debug.getinfo(1, "Sl").short_src, debug.getinfo(1, "Sl").currentline)
         cb({
             success = true,
             extraNum = extraNum,
@@ -54,7 +53,7 @@ local function ToggleDamageCheck(isExtraOn, extraNum, cb)
     else
         SetVehicleExtra(Veh, extraNum, isExtraOn)
         local newState = not isExtraOn
-        print({type = 'info', message = ("Extra %s %s"):format(extraNum, isExtraOn and "disabled" or "enabled")})
+        print.info("Extra %s %s", extraNum, isExtraOn and "disabled" or "enabled", debug.getinfo(1, "Sl").short_src, debug.getinfo(1, "Sl").currentline)
         cb(
             {
                 success = true,
@@ -67,9 +66,9 @@ end
 
 local function toggleRemote()
     if not InVehicle then return end
-    if OpenDamageCheck() == 1 then return notify(config.notify.success.closed, 'success') end
-    if OpenDamageCheck() == 2 then return notify(config.notify.error.damaged, 'error') end
-    if OpenDamageCheck() == false then
+    if openDamageCheck() == 1 then return notify(config.notify.success.closed, 'success') end
+    if openDamageCheck() == 2 then return notify(config.notify.error.damaged, 'error') end
+    if openDamageCheck() == false then
         IsUIOpen = not IsUIOpen
         if IsUIOpen then
             checkVehicleExtras()
@@ -90,7 +89,7 @@ local function toggleRemote()
             IsUiOpen = false
         end
     else
-        print().debug('Something unexpected happend', debug.getinfo(1, "Sl").short_src, debug.getinfo(1, "Sl").currentline)
+        print.debug('Something unexpected happend', debug.getinfo(1, "Sl").short_src, debug.getinfo(1, "Sl").currentline)
     end
 end
 
@@ -126,6 +125,8 @@ RegisterKeyMapping(cursor.commands.command, cursor.description, 'keyboard', curs
 
 RegisterNetEvent('tr_patrolextras:client:toggleRemote', toggleRemote)
 RegisterNetEvent('tr_patrolextras:client:toggleCursor', toggleCursor)
+exports('toggleRemote', toggleRemote)
+exports('toggleCursor', toggleCursor)
 
 CreateThread(function()
     local lastSirenState = nil
