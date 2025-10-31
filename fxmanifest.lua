@@ -10,7 +10,7 @@ dependencies {
 
 author 'Trippler'
 docs 'https://docs.trippler.store'
-version '1.0.2'
+version '1.0.3'
 
 client_scripts {
   'client/main.lua',
