@@ -3,8 +3,8 @@ game 'gta5'
 lua54 'yes'
 dependencies {
   'tr_lib',
-  'pma-voice',
   'qb-core',
+  'pma-voice',
   'lenix_fusion',
 }
 
