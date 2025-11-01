@@ -5,7 +5,7 @@ dependencies {
   'tr_lib',
   'qb-core',
   'pma-voice',
-  'lenix_fusion',
+  'lenix_fusion', --[[ https://github.com/LenixDev/lenix_fusion/archive/refs/heads/main.zip ]]
 }
 
 author 'Trippler'
