@@ -1,6 +1,5 @@
-local lib<const> = exports.tr_lib:require [[@tr_lib/init]]
-local require<const> = function(arg) return lib.require(arg) end
-local settings = require 'config/client'
+local lib<const> = exports.tr_lib:require [[@tr_lib/get]]
+local settings = lib.require 'config/client'
 
 local longVoiceRange = settings.range
 local micFilter, isMicActive, isToggleOn = false, false, false
