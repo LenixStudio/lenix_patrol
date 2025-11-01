@@ -1,4 +1,4 @@
-lib = exports.tr_lib:require [[@tr_lib/init]]
+lib = exports.tr_lib:require [[@tr_lib/get]]
 
 lib.callback.register('getVehicleClass', function()
     return GetVehicleClass(GetVehiclePedIsIn(PlayerPedId(), false))

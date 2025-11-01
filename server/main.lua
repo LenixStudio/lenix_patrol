@@ -1,4 +1,4 @@
-local lib = exports.tr_lib:require [[@tr_lib/init]]
+local lib = exports.tr_lib:require [[@tr_lib/get]]
 
 AddEventHandler('entityCreated', function(handle)
   local source<const> = NetworkGetEntityOwner(handle)
