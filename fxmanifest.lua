@@ -5,7 +5,6 @@ dependencies {
   'tr_lib',
   'qb-core',
   'pma-voice',
-  'lenix_fusion',
 }
 
 author 'Trippler'
@@ -13,6 +12,7 @@ docs 'https://docs.trippler.store'
 version '1.0.3'
 
 client_scripts {
+  'client/bridge.lua',
   'client/main.lua',
 }
 server_script 'server/main.lua'
