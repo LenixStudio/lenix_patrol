@@ -5,7 +5,7 @@ dependencies {
   'tr_lib',
   'qb-core',
   'pma-voice',
-  'lenix_fusion', --[[ https://github.com/LenixDev/lenix_fusion/archive/refs/heads/main.zip ]]
+  'lenix_fusion',
 }
 
 author 'Trippler'
@@ -22,4 +22,5 @@ files {
 
 escrow_ingore {
   'config/client.lua',
+
 }
