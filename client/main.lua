@@ -47,9 +47,9 @@ local function deactivateMic()
     exports["pma-voice"]:clearProximityOverride()
     isToggleOn = false
     isMicActive = false
-    Bridge.show(nil, settings.locales.off)
+    Bridge.drawtext.show(nil, settings.locales.off)
     Wait(1000)
-    Bridge.hide()
+    Bridge.drawtext.hide()
 end
 
 local function vehicleCheckLoop()
@@ -88,7 +88,7 @@ RegisterNetEvent('tr_patrolmegaphone:client:toggle', function()
             applyMicFilter()
             exports["pma-voice"]:overrideProximityRange(longVoiceRange, true)
             isToggleOn = true
-            Bridge.show('J', settings.locales.on)
+            Bridge.drawtext.show('J', settings.locales.on)
             vehicleCheckLoop()
         else
             deactivateMic()
