@@ -1,5 +1,5 @@
 node_modules
-package-lock.json
-package.json
 build.js
-web/src/build/script.js
+package.json
+package-lock.json
+build

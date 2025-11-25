@@ -44,7 +44,7 @@ local function ToggleDamageCheck(isExtraOn, extraNum, cb)
         end
         SetVehicleExtra(Veh, extraNum, isExtraOn)
         local newState = not isExtraOn
-        print.info("Extra %s %s", extraNum, isExtraOn and "disabled" or "enabled", debug.getinfo(1, "Sl").short_src, debug.getinfo(1, "Sl").currentline)
+        lib.console.trace(("Extra %s %s"):format(extraNum, isExtraOn and "disabled" or "enabled"))
         cb({
             success = true,
             extraNum = extraNum,
@@ -53,7 +53,7 @@ local function ToggleDamageCheck(isExtraOn, extraNum, cb)
     else
         SetVehicleExtra(Veh, extraNum, isExtraOn)
         local newState = not isExtraOn
-        print.info("Extra %s %s", extraNum, isExtraOn and "disabled" or "enabled", debug.getinfo(1, "Sl").short_src, debug.getinfo(1, "Sl").currentline)
+        lib.console.trace(("Extra %s %s"):format(extraNum, isExtraOn and "disabled" or "enabled"))
         cb(
             {
                 success = true,
@@ -89,7 +89,7 @@ local function toggleRemote()
             IsUiOpen = false
         end
     else
-        print.debug('Something unexpected happend', debug.getinfo(1, "Sl").short_src, debug.getinfo(1, "Sl").currentline)
+        lib.console.fatal('Something unexpected happend')
     end
 end
 
@@ -117,8 +117,8 @@ RegisterNUICallback('unfocus', function(data, cb)
     cb(true)
 end)
 
-RegisterCommand(remote.commands.command, remote.commands.enabled and toggleRemote)
-RegisterCommand(cursor.commands.command, cursor.commands.enabled and toggleCursor)
+RegisterCommand(remote.commands.command, remote.commands.enabled and toggleRemote, false)
+RegisterCommand(cursor.commands.command, cursor.commands.enabled and toggleCursor, false)
 
 RegisterKeyMapping(remote.commands.command, remote.description, 'keyboard', remote.key)
 RegisterKeyMapping(cursor.commands.command, cursor.description, 'keyboard', cursor.key)
