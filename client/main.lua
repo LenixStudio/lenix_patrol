@@ -24,7 +24,7 @@ local function isEmergencyVehicle()
 end
 
 local function createMicFilter()
-    micFilter = CreateAudioSubmix("tr_patrolmegaphone")
+    micFilter = CreateAudioSubmix("lenix_patrolmegaphone")
     if micFilter then
         SetAudioSubmixEffectRadioFx(micFilter, 0)
         SetAudioSubmixEffectParamInt(micFilter, 0, `default`, 1)
@@ -71,12 +71,12 @@ CreateThread(function()
 end)
 
 RegisterCommand(settings.command, function()
-    TriggerEvent('tr_patrolmegaphone:client:toggle')
+    TriggerEvent('lenix_patrolmegaphone:client:toggle')
 end, false)
 
 RegisterKeyMapping(settings.command, settings.description, 'keyboard', settings.key)
 
-RegisterNetEvent('tr_patrolmegaphone:client:toggle', function()
+RegisterNetEvent('lenix_patrolmegaphone:client:toggle', function()
     if not isEmergencyVehicle() then
         exports['qb-core']:Notify(settings.locales.refused, 'error', 5000)
         return
