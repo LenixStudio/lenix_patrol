@@ -7,6 +7,6 @@ AddEventHandler('entityCreated', function(handle)
   local entityType = GetEntityType(handle) ~= nil and GetEntityType(handle) or nil
   if entityType and entityType == 2 and vehicleClass and vehicleClass == 18 then
     Wait(500)
-    TriggerClientEvent('tr_patrolextras:client:checkVehicleExtras', source, handle, vehicleClass)
+    TriggerClientEvent('lenix_patrolextras:client:checkVehicleExtras', source, handle, vehicleClass)
   end
 end)

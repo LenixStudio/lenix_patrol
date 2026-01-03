@@ -2,7 +2,7 @@ local IsUIOpen, UnAvailableExtras, ActiveExtras, InActiveExtras = false, {}, {},
 local config<const> = lib.require 'config/client'
 local remote<const>, cursor<const> = config.controls.toggleRemote, config.controls.toggleCursor
 
-RegisterCommand('tr_patrolextras_debug', function()
+RegisterCommand('lenix_patrolextras_debug', function()
     if InVehicle then
         checkVehicleExtras()
     else
@@ -102,7 +102,7 @@ local function toggleCursor()
     end
 end
 
-RegisterNetEvent('tr_patrolextras:client:checkVehicleExtras', checkVehicleExtras)
+RegisterNetEvent('lenix_patrolextras:client:checkVehicleExtras', checkVehicleExtras)
 
 RegisterNUICallback('toggle', function(data, cb)
     if not InVehicle then return end
@@ -123,8 +123,8 @@ RegisterCommand(cursor.commands.command, cursor.commands.enabled and toggleCurso
 RegisterKeyMapping(remote.commands.command, remote.description, 'keyboard', remote.key)
 RegisterKeyMapping(cursor.commands.command, cursor.description, 'keyboard', cursor.key)
 
-RegisterNetEvent('tr_patrolextras:client:toggleRemote', toggleRemote)
-RegisterNetEvent('tr_patrolextras:client:toggleCursor', toggleCursor)
+RegisterNetEvent('lenix_patrolextras:client:toggleRemote', toggleRemote)
+RegisterNetEvent('lenix_patrolextras:client:toggleCursor', toggleCursor)
 exports('toggleRemote', toggleRemote)
 exports('toggleCursor', toggleCursor)
 

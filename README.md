@@ -6,23 +6,23 @@ Remote to control the patrol's extras, designed for cars that has configurable s
 ### Exports
 ### toggleRemote
 ```lua
-exports.tr_patrolextras:toggleRemote()
+exports.lenix_patrolextras:toggleRemote()
 ```
 
 ### toggleCursor
 ```lua
-exports.tr_patrolextras:toggleCursor()
+exports.lenix_patrolextras:toggleCursor()
 ```
 
 ### Events
 ### toggleRemote
 ```lua
-TriggerEvent('tr_patrolextras:client:toggleRemote')
+TriggerEvent('lenix_patrolextras:client:toggleRemote')
 ```
 
 ### toggleCursor
 ```lua
-TriggerEvent('tr_patrolextras:client:toggleCursor')
+TriggerEvent('lenix_patrolextras:client:toggleCursor')
 ```
 
 ## Config
