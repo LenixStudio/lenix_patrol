@@ -2,6 +2,20 @@
 Remote to control the patrol's extras, designed for cars that has configurable siren from the extras
 
 ## About
+### Introduction
+Welcome to Patrol Extras.
+
+This script is designed to enhance your server's gameplay by:
+* giving the ability to your players to control their patrol's extras with a smoth UI control panel, such as toggling the siren's lights. Also this script is build with maners that doesn't heat up the device's resources, either on the client or the server, plus it can be easily integrated with your existing server setup
+* not always it will change the siren's light, it depends on your patrol's extras, please test your vehicles first and make sure that you vehicle has siren light on the extras
+
+### Instructions
+ * Installation: drag and drop
+ * Environment: standalone
+ * Support: available
+
+> Enjoy your improved gaming experience with Patrol Extra!
+
 <img width="321" height="408" alt="patrolextras1" src="https://github.com/user-attachments/assets/d489bb74-db72-41cc-921a-573da6001d53" />
 <img width="321" height="405" alt="patrolextras2" src="https://github.com/user-attachments/assets/e5f95b00-c4c2-40b7-b5af-9465197c9305" />
 
