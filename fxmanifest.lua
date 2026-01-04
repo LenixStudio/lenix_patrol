@@ -7,8 +7,7 @@ dependencies {
   'pma-voice',
 }
 
-author 'Trippler'
-docs 'https://docs.trippler.store'
+author 'https://github.com/LenixDev'
 version '1.0.4'
 
 client_scripts {
@@ -19,9 +18,3 @@ server_script 'server/main.lua'
 files {
   'config/client.lua',
 }
-
-escrow_ingore {
-  'config/client.lua',
-
-}
-
