@@ -5,8 +5,7 @@ dependencies {
   'tr_lib'
 }
 
-author 'Trippler'
-docs 'https://docs.trippler.store'
+author 'https://github.com/LenixDev'
 version '1.0.4'
 
 client_scripts {
@@ -17,8 +16,3 @@ client_scripts {
 server_script 'server/main.lua'
 ui_page 'web/index.html'
 file 'web/**'
-
-escrow_ignore {
-  'config/main.lua'
-
-}
