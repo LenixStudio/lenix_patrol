@@ -1,6 +1,20 @@
 # lenix_patrolmegaphone
 Patrol microphone designed for police officers
 
+# About
+### Introduction
+Welcome to Patrol Megaphone.
+
+This script is designed to enhance your server's gameplay by:
+* A Microphone comes integrated with your patrol vehicle so your officers can talk to anyone loudly just from the their patrol.
+
+### Instructions
+* Installation: drag and drop
+* Environment: QB
+* Support: available
+
+> Enjoy your improved gaming experience with Patrol Megaphone!
+
 # Config
 
 ## Configuration
