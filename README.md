@@ -1,6 +1,10 @@
 # lenix_patrolextras
 Remote to control the patrol's extras, designed for cars that has configurable siren from the extras
 
+## About
+<img width="321" height="408" alt="patrolextras1" src="https://github.com/user-attachments/assets/d489bb74-db72-41cc-921a-573da6001d53" />
+<img width="321" height="405" alt="patrolextras2" src="https://github.com/user-attachments/assets/e5f95b00-c4c2-40b7-b5af-9465197c9305" />
+
 ## Imports
 
 ### Exports
