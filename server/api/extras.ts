@@ -8,7 +8,7 @@ on('entityCreated', async (handle: number) => {
   const entityType = GetEntityType(handle) != null ? GetEntityType(handle) : null
   if (entityType && entityType == 2 && vehicleClass && vehicleClass == 18) {
     setTimeout(() => {
-      TriggerClientEvent('lenix_patrolextras:client:checkVehicleExtras', source, handle, vehicleClass)
+      emitNet('lenix_patrolextras:client:checkVehicleExtras', source, handle, vehicleClass)
     }, 500)
   }
 })
