@@ -10,13 +10,7 @@ This script is designed to enhance your server's gameplay by:
 * not always it will change the siren's light, it depends on your patrol's extras, please test your vehicles first and make sure that you vehicle has siren light on the extras
 
 ### Instructions
- * Installation: 
-   * Node.js: make sure you have the Node.js installed on your device, to do so run: 
-    ```bash
-    node -v
-    ```
-    1. run: npm i
-    2. run: npm run build
+ * Installation: drag and drop
  * Environment: standalone
  * Support: available
 

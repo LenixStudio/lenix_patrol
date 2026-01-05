@@ -1,18 +1,14 @@
 fx_version 'cerulean'
 game 'gta5'
-lua54 'yes'
-dependencies {
-  'tr_lib'
-}
 
 author 'https://github.com/LenixDev'
-version '1.0.4'
+version '2.0.0'
 
-client_scripts {
-  'client/bridge.lua',
-  'config/client.lua',
-  'client/main.lua',
+client_script 'build/client.js'
+server_script 'build/server.js'
+
+ui_page 'nui/public/index.html'
+files {
+  'nui/public/index.html',
+  'build/nui.js'
 }
-server_script 'server/main.lua'
-ui_page 'web/index.html'
-file 'web/**'
