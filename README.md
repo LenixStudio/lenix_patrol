@@ -1,6 +1,9 @@
 # lenix_patrolmegaphone
 Patrol microphone designed for police officers
 
+# IMPORTANT
+THIS SCRIPT HAS BEEN MERGED TO [lenix_patrol](https://github.com/LenixStudio/lenix_patrol)
+
 # About
 ### Introduction
 Welcome to Patrol Megaphone.
