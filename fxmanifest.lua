@@ -8,9 +8,10 @@ dependencies {
 }
 
 author 'https://github.com/LenixDev'
-version '1.0.4'
+version '1.0.5'
 
 client_scripts {
+  '@tr_lib/index.lua',
   'client/bridge.lua',
   'client/main.lua',
 }
