@@ -30,24 +30,24 @@ This script is designed to enhance your server's gameplay by:
 
 ### Exports
 ### toggleRemote
-```lua
-exports.lenix_patrolextras:toggleRemote()
+```ts
+exports.lenix_patrolextras.toggleRemote()
 ```
 
 ### toggleCursor
-```lua
-exports.lenix_patrolextras:toggleCursor()
+```ts
+exports.lenix_patrolextras.toggleCursor()
 ```
 
 ### Events
 ### toggleRemote
-```lua
-TriggerEvent('lenix_patrolextras:client:toggleRemote')
+```ts
+emit('lenix_patrolextras:client:toggleRemote')
 ```
 
 ### toggleCursor
-```lua
-TriggerEvent('lenix_patrolextras:client:toggleCursor')
+```ts
+emit('lenix_patrolextras:client:toggleCursor')
 ```
 
 ## Configuration
