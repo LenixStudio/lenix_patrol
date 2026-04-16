@@ -1,1 +1,0 @@
-export type { VehicleClass } from '../../client/api/extras'
